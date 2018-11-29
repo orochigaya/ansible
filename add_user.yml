@@ -1,0 +1,24 @@
+---
+ - hosts: all
+   vars:
+    user: toto
+    rep: test
+   
+   tasks:
+    - name: Create a login user
+      user: 
+         name: '{{ user }}'
+         shell: /bin/zsh
+         state: present 
+    - name: Se authorized key taken from file
+      authorized_key:
+        user: '{{ user }}'
+        state: present
+        key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+    - name: Création répertoire test
+      file:
+        path: /'{{ rep }}'
+        state: directory
+        mode: 0755
+    - name: utilisation template
+      template: src=file_template.j2 dest=/test/file_template

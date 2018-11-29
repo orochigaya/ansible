@@ -1,0 +1,41 @@
+---
+- hosts: web
+  tasks:
+   - name: update Debian
+     apt: update_cache=yes
+     when: ansible_distribution == "Debian"
+   - name: update Centos
+     yum: update_cache=yes
+     when: ansible_distribution == "CentOS"
+   - name: install apache2 Debian
+     apt: name=apache2 state=present
+     when: ansible_distribution == "Debian"
+     notify: restart apache2
+   - name: install apache2 Centos
+     yum: name=httpd state=present
+     when: ansible_distribution == "CentOS"
+     notify: restart httpd
+   #- name: Copy
+   #  copy:
+   #   src: /root/index.html
+   #   dest: /var/www/html/
+   #- name: Restart et enable apache2 Debian
+   #  systemd: 
+   #    name: apache2
+   #    state: restarted
+   #    enabled: yes
+   #  when: ansible_distribution == "Debian"
+   #- name: Restart et enable apache2 Centos
+   #  systemd:
+   #    name: httpd
+   #    enabled: True
+   #    state: reloaded    
+   #  when: ansible_distribution == "CentOS"
+   
+  handlers:
+   - name: restart apache2
+     service : name=apache2 state=restarted
+     
+   - name : restart httpd
+     service : name=httpd state=restarted
+     
