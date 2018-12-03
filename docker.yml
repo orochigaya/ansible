@@ -1,0 +1,5 @@
+---
+- hosts: Debian
+  tasks:
+  roles:
+    - docker

@@ -1,0 +1,38 @@
+---
+# tasks file for docker
+- name: update debian
+  apt:
+    update_cache=yes
+
+- name: Install packages to allow apt to use a repository over HTTPS
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - software-properties-common
+
+- name: Add GPG key for Docker
+  shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+- name: Add the Docker repository to the apt sources list
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable"
+
+- name: Install Docker
+  apt:
+    name: docker-ce
+    state: present
+    update_cache: yes
+  notify:
+    - start docker
+
+- name: Install pip
+  apt:
+    name: python-pip
+    state: present
+
+- name: Install docker-py
+  shell: pip install 'docker-py>=1.7.0'
+

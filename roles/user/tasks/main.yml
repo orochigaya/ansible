@@ -1,0 +1,16 @@
+---
+# tasks file for user
+- name: Create a login user
+  user: 
+    name: '{{ user }}'
+    shell: /bin/bash
+    state: present
+- name: utilisation des clefs
+  authorized_key:
+    user: '{{ user }}'
+    state: present
+    key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+- name: "creation repertoire local.dev"
+  file:
+    path: /home/{{ user }}/{{ rep }}
+    state: directory

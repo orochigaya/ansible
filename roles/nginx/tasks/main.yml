@@ -1,0 +1,41 @@
+---
+# tasks file for nginx
+- name: update debian
+  apt:
+    update_cache=yes
+- name: desinstallation apache2
+  apt:
+    name: apache2
+    state: absent
+- name: installation nginx
+  apt:
+    name: nginx
+    state: present
+- name: restart and enable nginx
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes
+- name: lien symbolique
+  file:
+    src: /home/dev/{{ rep }}
+    dest: /var/www/html/{{ rep }}
+    state: link
+  notify: service nginx
+- name: utilisation template
+  template: 
+    src: /etc/ansible/roles/nginx/templates/nginx.j2 
+    dest: /etc/nginx/sites-available/{{ rep }}
+  notify: service nginx
+- name: lien symbolique nginx
+  file:
+    src: '/etc/nginx/sites-available/{{ rep }}'
+    dest: '/etc/nginx/sites-enabled/{{ rep }}'
+    state: link
+  notify: service nginx
+- name: Suppression default
+  file:
+    path: /etc/nginx/sites-available/default
+    state: absent
+  notify: service nginx
+
