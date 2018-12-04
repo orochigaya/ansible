@@ -2,9 +2,9 @@ server {
        listen 80;
        listen [::]:80;
 
-       server_name {{ rep }};
+       server_name {{ item }};
 
-       root /var/www/html/{{ rep }};
+       root /var/www/html/{{ item }};
        index index.html;
 
        location / {

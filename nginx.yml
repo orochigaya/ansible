@@ -2,7 +2,9 @@
 - hosts: Debian
   vars:
     user: dev
-    rep: local.dev
+    domains: 
+     - local.dev
+     - marc.org
   tasks:
   roles:
     - nginx

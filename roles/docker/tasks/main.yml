@@ -33,6 +33,9 @@
     name: python-pip
     state: present
 
+- pip:
+    name: setuptools
+
 - name: Install docker-py
   shell: pip install 'docker-py>=1.7.0'
 

@@ -16,26 +16,16 @@
     name: nginx
     state: restarted
     enabled: yes
-- name: lien symbolique
-  file:
-    src: /home/dev/{{ rep }}
-    dest: /var/www/html/{{ rep }}
-    state: link
-  notify: service nginx
-- name: utilisation template
-  template: 
-    src: /etc/ansible/roles/nginx/templates/nginx.j2 
-    dest: /etc/nginx/sites-available/{{ rep }}
-  notify: service nginx
-- name: lien symbolique nginx
-  file:
-    src: '/etc/nginx/sites-available/{{ rep }}'
-    dest: '/etc/nginx/sites-enabled/{{ rep }}'
-    state: link
-  notify: service nginx
+
 - name: Suppression default
   file:
     path: /etc/nginx/sites-available/default
     state: absent
   notify: service nginx
 
+- name: Installation php
+  include: php.yml
+
+- name: configurations des sites
+  include: sites.yml
+  with_items: "{{ domains }}"

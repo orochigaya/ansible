@@ -1,0 +1,19 @@
+- name: "creation repertoire local.dev"
+  file:
+    path: /home/{{ user }}/{{ item }}
+    state: directory
+- name: utilisation template
+  template: 
+    src: /etc/ansible/roles/nginx/templates/nginx.j2 
+    dest: /etc/nginx/sites-available/{{ item }}
+  notify: service nginx
+- name: lien symbolique nginx
+  file:
+    src: '/etc/nginx/sites-available/{{ item }}'
+    dest: '/etc/nginx/sites-enabled/{{ item }}'
+    state: link
+- name: lien symbolique
+  file:
+    src: '/home/{{ user }}/{{ item }}'
+    dest: '/var/www/html/{{ item }}'
+    state: link
