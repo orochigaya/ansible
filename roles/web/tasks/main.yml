@@ -1,0 +1,18 @@
+---
+# tasks file for web
+- name: update debian
+  apt:
+    update_cache=yes
+- name: desinstallation apache2
+  apt:
+    name: apache2
+    state: absent
+- name: installation nginx
+  apt:
+    name: nginx
+    state: present
+- name: restart and enable nginx
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes

@@ -7,7 +7,7 @@
        php: yes
      - domain: marc.org
        php: no
-       repo: https://github.com/Grafikart/grafikart.github.io.git
+       repo: https://github.com/orochigaya/Web
   tasks:
   roles:
     - nginx
