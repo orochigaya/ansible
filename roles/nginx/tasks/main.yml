@@ -25,6 +25,7 @@
 
 - name: Installation php
   include: php.yml
+  notify: service php
 
 - name: configurations des sites
   include: sites.yml

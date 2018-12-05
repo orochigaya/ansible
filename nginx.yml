@@ -3,8 +3,11 @@
   vars:
     user: dev
     domains: 
-     - local.dev
-     - marc.org
+     - domain: local.dev
+       php: yes
+     - domain: marc.org
+       php: no
+       repo: https://github.com/Grafikart/grafikart.github.io.git
   tasks:
   roles:
     - nginx

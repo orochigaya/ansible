@@ -1,2 +1,15 @@
 ---
 # defaults file for nginx
+php_package:
+    - php7.0
+    - php7.0-common
+    - php7.0-cgi
+    - php7.0-gd
+    - php7.0-mysql
+    - php7.0-fpm
+    - php7.0-curl
+
+php_date_timezone: "europe/Paris"
+php_upload_max_filesize: "20M"
+php_post_max_size: "20M"
+php_memory_limit: "1024M"

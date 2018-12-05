@@ -1,19 +1,29 @@
-- name: "creation repertoire local.dev"
-  file:
-    path: /home/{{ user }}/{{ item }}
-    state: directory
+---
+- name: creation du dossier {{ item.domain }}
+  become: yes
+  when: item.repo is undefined
+  file: path=/home/{{ user }}/{{ item.domain }} state=directory owner={{ user }}
+
+- name: clonage du site {{ item.domain }} avec {{ item.repo }}
+  become: yes
+  when: item.repo is defined
+  git: dest=/home/{{ user }}/{{ item.domain }} clone=yes repo={{ item.repo }}
+
 - name: utilisation template
   template: 
     src: /etc/ansible/roles/nginx/templates/nginx.j2 
-    dest: /etc/nginx/sites-available/{{ item }}
+    dest: /etc/nginx/sites-available/{{ item.domain }}
+    force: yes
   notify: service nginx
+
 - name: lien symbolique nginx
   file:
-    src: '/etc/nginx/sites-available/{{ item }}'
-    dest: '/etc/nginx/sites-enabled/{{ item }}'
+    src: '/etc/nginx/sites-available/{{ item.domain }}'
+    dest: '/etc/nginx/sites-enabled/{{ item.domain }}'
     state: link
+
 - name: lien symbolique
   file:
-    src: '/home/{{ user }}/{{ item }}'
-    dest: '/var/www/html/{{ item }}'
+    src: '/home/{{ user }}/{{ item.domain }}'
+    dest: '/var/www/html/{{ item.domain }}'
     state: link
