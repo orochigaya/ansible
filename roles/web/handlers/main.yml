@@ -1,2 +1,7 @@
 ---
 # handlers file for web
+- name: service nginx
+  service: name=nginx state=restarted
+
+- name: service php
+  service: name=php7.0-fpm state=restarted

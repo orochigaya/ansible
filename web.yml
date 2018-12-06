@@ -1,0 +1,8 @@
+---
+- hosts: web
+  vars:
+    domain: web.local
+  tasks:
+  roles:
+    - web
+    - tools

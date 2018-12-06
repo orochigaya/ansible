@@ -3,16 +3,49 @@
 - name: update debian
   apt:
     update_cache=yes
-- name: desinstallation apache2
-  apt:
-    name: apache2
-    state: absent
+
 - name: installation nginx
   apt:
     name: nginx
     state: present
+
 - name: restart and enable nginx
   systemd:
     name: nginx
     state: restarted
     enabled: yes
+
+- name: Installation php
+  apt: name= {{ item }} state=present
+  with_items: php_package
+  notify: service php
+
+- name: Mediawiki | download mediawiki.tar.gz
+  get_url:
+    url: https://releases.wikimedia.org/mediawiki/1.27/mediawiki-1.27.1.tar.gz
+    dest: /var/www/
+    force: no
+
+- name: Mediawiki | unzip mediawiki
+  command: tar zxvf /var/www/mediawiki-1.27.1.tar.gz -C /var/www
+
+#- name: Mediawiki | remove tar.gz
+#  shell: rm -r /var/www/mediawiki-1.27.1.tar.gz
+
+- name: Mediawiki | mv target directory
+  command: mv /var/www/mediawiki-1.27.1 /var/www/mediawiki
+  args:
+    creates: /var/www/mediawiki
+
+- name: Mediawiki | Copy nginx configuration
+  template:  
+    src: /etc/ansible/roles/web/templates/web.j2
+    dest: /etc/nginx/sites-available/mediawiki
+  #notify: service nginx
+
+- name: Mediawiki | Enable nginx configuration
+  file:
+    src: /etc/nginx/sites-available/mediawiki
+    dest: /etc/nginx/sites-enabled/mediawiki
+    state: link
+  notify: service nginx
