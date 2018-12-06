@@ -4,5 +4,6 @@
     domain: web.local
   tasks:
   roles:
-    - web
     - tools
+    - tools_php
+    - web

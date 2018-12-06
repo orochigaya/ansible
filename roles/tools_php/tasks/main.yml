@@ -1,0 +1,14 @@
+---
+# tasks file for tools_php
+- name: installation outils
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - php7.0
+    - php7.0-common
+    - php7.0-cgi
+    - php7.0-gd
+    - php7.0-mysql
+    - php7.0-fpm
+    - php7.0-curl

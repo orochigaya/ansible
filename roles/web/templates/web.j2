@@ -5,16 +5,22 @@ server {
         server_name {{ domain }};
 
         root /var/www/mediawiki/;
-        
 
-        {# index index.php;  #}
+        index index.html;
+        location / {
+        index index.php;
+        try_files $uri $uri/ @mediawiki;
+        }
+
+        location @mediawiki {
+         rewrite ^/(.*)$ /index.php;
+        }
 
         location ~ \.php$ {
-                try_files $uri =404;
-                #fastcgi_pass 127.0.0.1:9000;
-                fastcgi_index index.php;
-                fastcgi_pass unix:/var/run/php/php7.0-fpm-sock;
-                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                include /etc/nginx/fastcgi_params;
+        include /etc/nginx/fastcgi_params;
+        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        try_files $uri @mediawiki;
         }
 }       
