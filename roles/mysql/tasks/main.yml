@@ -27,11 +27,13 @@
 
 - name: Create a new database with name mediawikidata
   mysql_db:
+    login_password: azer1234
     name: mediawikidata
     state: present
 
 - name: Create database user
   mysql_user:
+    login_password: azer1234
     name: mediawiki
     password: azer1234
     priv: '*.*:ALL'
