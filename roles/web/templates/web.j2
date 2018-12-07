@@ -5,8 +5,11 @@ server {
         server_name {{ domain }};
 
         root /var/www/mediawiki/;
+        index index.php;
+        client_max_body_size    100m;
+        client_body_timeout     60;
+        charset utf-8;
 
-        index index.html;
         location / {
         index index.php;
         try_files $uri $uri/ @mediawiki;

@@ -29,14 +29,19 @@
 - name: Mediawiki | unzip mediawiki
   command: tar zxvf /var/www/mediawiki-1.27.1.tar.gz -C /var/www
 
-- name: Mediawiki | remove tar.gz
-  shell: rm -r /var/www/mediawiki-1.27.1.tar.gz
-
 - name: Mediawiki | mv target directory
   command: mv /var/www/mediawiki-1.27.1 /var/www/mediawiki
+  args:
+    creates: /var/www/mediawiki
   
-- name: Mediawiki | change group
-  shell: chgrp root /var/www/mediawiki
+- name: Mediawiki | Set permissions for www directory
+  file:
+    path: /var/www/mediawiki
+    state: directory
+    mode: "u=rwX,g=rX,o=rX"
+    owner: www-data
+    group: www-data
+    recurse: yes
 
 - name: Mediawiki | Copy nginx configuration
   template:  

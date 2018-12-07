@@ -1,0 +1,38 @@
+---
+# tasks file for mysql
+- name: update debian
+  apt:
+    update_cache=yes
+
+- name: Install pip
+  apt:
+    name: python-pip
+    state: present
+    
+- name: Installation PYmysql 2.0
+  apt:
+    name: python-pymysql
+    state: present
+
+- name: Installation MYSQL
+  apt:
+    name: mysql-server
+    state: present
+
+- name: update and enable
+  systemd: 
+    name: mysql
+    state: restarted
+    enabled: yes
+
+- name: Create a new database with name mediawikidata
+  mysql_db:
+    name: mediawikidata
+    state: present
+
+- name: Create database user
+  mysql_user:
+    name: mediawiki
+    password: azer1234
+    priv: '*.*:ALL'
+    state: present
